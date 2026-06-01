@@ -1,154 +1,691 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lingampelli Siddhartha | Tech Wizard</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <!-- THREE.js for 3D Avatar -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
-    <!-- GSAP for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
-    <!-- Annyang for voice commands -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+    <title>Lingampelli Siddhartha | AI & Full Stack Developer</title>
+    
+    <!-- Premium Font Stack: Anton for brutalist headers, Geist for clean body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS with custom Framer tokens -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Geist', 'sans-serif'],
+                        display: ['Anton', 'sans-serif'],
+                    },
+                    colors: {
+                        background: '#0a0a0a',
+                        surface: '#141414',
+                        surfaceLight: '#1c1c1c',
+                        border: '#262626',
+                        brand: '#ff4925',
+                        textMain: '#ffffff',
+                        textMuted: '#a1a1aa',
+                        textDark: '#0a0a0a'
+                    },
+                    letterSpacing: {
+                        tightest: '-0.02em', /* Safely tight without overlapping */
+                        widest: '0.1em'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Base Resets & Selection */
+        ::selection { background-color: #0a0a0a; color: #ff4925; }
+        ::-moz-selection { background-color: #0a0a0a; color: #ff4925; }
+        
+        body { 
+            background-color: #0a0a0a;
+            color: #ffffff;
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale; 
+            overflow-x: hidden;
+        }
+        
+        /* Premium Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333333; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff4925; }
+
+        /* Initial state for Motion reveals */
+        .framer-reveal { opacity: 0; transform: translateY(40px); }
+
+        /* Infinite Marquee */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); } 
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 20s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* Sticky Cards Stacking Offset Calculations */
+        .card-stack-1 { top: 120px; }
+        .card-stack-2 { top: 140px; }
+        .card-stack-3 { top: 160px; }
+        .card-stack-4 { top: 180px; }
+        .card-stack-5 { top: 200px; }
+        .card-stack-6 { top: 220px; }
+    </style>
 </head>
-<body>
-    <!-- Matrix Rain Background -->
-    <canvas id="matrix"></canvas>
+<body class="relative">
 
-    <!-- 3D Avatar -->
-    <div id="avatar-container"></div>
-
-    <!-- Voice Command UI -->
-    <div class="voice-ui">
-        <button id="voice-btn">🎤</button>
-        <div id="voice-status">Say "Help" for commands</div>
-    </div>
-
-    <!-- Hacker Terminal -->
-    <div class="terminal">
-        <div id="terminal-text"></div>
-    </div>
-
-    <!-- Header -->
-    <header class="header">
-        <div class="header-container">
-            <div class="logo">Lingampelli Siddhartha</div>
-            <nav class="nav">
-                <ul class="nav-links">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#skills">Skills</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="hero" class="hero-section">
-        <div class="hero-container">
-            <div class="hero-text">
-                <h1 class="hero-title">Hello, I'm  Siddhartha</h1>
-                <p class="hero-subtitle" id="typewriter"></p>
-                <a href="#contact" class="hero-btn">Contact Me</a>
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-6 border-b border-transparent">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <a href="#home" class="text-3xl font-display uppercase tracking-wide flex items-center gap-3 hover:opacity-80 transition-opacity text-white mix-blend-difference">
+                <div class="w-3 h-3 bg-brand shadow-[0_0_15px_rgba(255,73,37,0.8)]"></div>
+                SIDDHARTHA
+            </a>
+            
+            <div class="hidden md:flex items-center gap-10 text-sm font-bold tracking-widest text-textMuted uppercase mix-blend-difference">
+                <a href="#about" class="hover:text-white hover:text-brand transition-colors">About</a>
+                <a href="#skills" class="hover:text-white hover:text-brand transition-colors">Arsenal</a>
+                <a href="#projects" class="hover:text-white hover:text-brand transition-colors">Works</a>
+                <a href="https://github.com/Siddu-lingampelli" target="_blank" rel="noreferrer" class="hover:text-white transition-colors flex items-center gap-1 group">
+                    GitHub <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:text-brand group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                </a>
             </div>
-            <div class="hero-image">
-                <img src="https://www.pngall.com/wp-content/uploads/5/Profile-PNG-Free-Download.png" alt="Siddhartha">
-            </div>
-        </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="section-container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-wrapper">
-                <p class="about-text">I'm a 2nd-year B.Tech student at Geethanjali College of Engineering and Technology, driven by a relentless passion for coding and innovation. My journey blends technical prowess with creativity—whether I'm building impactful web solutions, diving into AI, or crafting cinematic timelapse and slow-motion videos for my YouTube channel. I thrive in coding competitions and am committed to pushing boundaries in technology.</p>
+            <div class="hidden md:block">
+                <a href="#contact" class="bg-white text-textDark px-8 py-3.5 text-xs font-black tracking-widest uppercase transition-all hover:bg-neutral-200 flex items-center gap-2 rounded-full">
+                    Let's Talk <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
             </div>
-        </div>
-    </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="section skills-section">
-        <div class="section-container">
-            <h2 class="section-title">Skills & Expertise</h2>
-            <p class="section-tagline">Empowering Innovation with Code</p>
-            <div class="skills-wrapper">
-                <div class="skills-list">
-                    <div class="skill-card">HTML <span class="skill-level">Proficient</span></div>
-                    <div class="skill-card">CSS <span class="skill-level">Proficient</span></div>
-                    <div class="skill-card">JavaScript <span class="skill-level">In Progress</span></div>
-                    <div class="skill-card">C Language <span class="skill-level">Intermediate</span></div>
-                    <div class="skill-card">Java <span class="skill-level">In Progress</span></div>
-                    <div class="skill-card">Coding Events <span class="skill-level">Competitor</span></div>
+            <button id="mobile-menu-btn" class="md:hidden text-white relative z-50 p-2.5 bg-surface border border-border rounded-full mix-blend-difference">
+                <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                <i data-lucide="x" id="close-icon" class="w-6 h-6 hidden"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="fixed inset-0 bg-[#0a0a0a]/98 backdrop-blur-2xl z-40 flex flex-col justify-center items-center gap-10 opacity-0 pointer-events-none transition-opacity duration-300">
+            <a href="#about" class="mobile-link text-6xl font-display text-white hover:text-brand transition-colors uppercase">ABOUT</a>
+            <a href="#skills" class="mobile-link text-6xl font-display text-white hover:text-brand transition-colors uppercase">ARSENAL</a>
+            <a href="#projects" class="mobile-link text-6xl font-display text-white hover:text-brand transition-colors uppercase">WORKS</a>
+            <a href="https://github.com/Siddu-lingampelli" target="_blank" class="mobile-link text-5xl font-display text-white hover:text-brand transition-colors uppercase flex items-center gap-3 mt-4">
+                GITHUB <i data-lucide="arrow-up-right" class="w-10 h-10"></i>
+            </a>
+            <a href="#contact" class="mobile-link mt-8 bg-brand text-textDark px-12 py-5 rounded-full font-display tracking-widest uppercase text-3xl">Let's Talk</a>
+        </div>
+    </nav>
+
+    <main class="relative z-10">
+        
+        <section id="home" class="bg-background min-h-[95vh] flex flex-col justify-center items-center text-center px-6 pt-32 pb-20 relative overflow-hidden">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-brand/5 blur-[150px] rounded-full pointer-events-none"></div>
+
+            <div class="framer-reveal flex flex-col items-center w-full max-w-6xl relative z-10">
+                
+                <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-border bg-surface text-xs font-bold tracking-widest uppercase mb-12 shadow-xl">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand"></span>
+                    </span>
+                    <span class="text-white">Available for full-time roles</span>
                 </div>
-                <div class="skills-growth">
-                    <h3 class="growth-title">Currently Mastering</h3>
-                    <p>Java | JavaScript | Advanced Web Development | Algorithms & Data Structures</p>
-                    <h3 class="growth-title">Vision Ahead</h3>
-                    <p>AI Mastery | Scalable Solutions | Full-Stack Excellence</p>
+                
+                <h1 class="text-[14vw] md:text-[140px] lg:text-[160px] font-display tracking-tightest leading-[0.95] text-white mb-10 uppercase">
+                    BEYOND CODE.<br>
+                    BUILT WITH AI.
+                </h1>
+                
+                <p class="text-textMuted text-xl md:text-3xl font-medium max-w-4xl leading-relaxed mb-14">
+                    I am <span class="text-white font-semibold">Lingampelli Siddhartha</span>. I build AI agents and full-stack systems that automate workflows, reduce manual tasks, and drive real business value.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-5 w-full sm:w-auto">
+                    <a href="#projects" class="w-full sm:w-auto bg-brand text-textDark px-12 py-5 rounded-full font-bold uppercase tracking-widest text-lg hover:scale-105 transition-transform flex items-center justify-center gap-3">
+                        Explore Work <i data-lucide="arrow-down-right" class="w-5 h-5"></i>
+                    </a>
+                    <a href="https://github.com/Siddu-lingampelli" target="_blank" rel="noreferrer" class="w-full sm:w-auto bg-transparent border-2 border-border text-white px-12 py-5 rounded-full font-bold uppercase tracking-widest text-lg hover:bg-surface transition-colors flex items-center justify-center gap-3">
+                        <i data-lucide="github" class="w-5 h-5"></i> GitHub
+                    </a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section projects-section">
-        <div class="section-container">
-            <h2 class="section-title">Featured Projects</h2>
-            <p class="section-tagline">Turning Ideas into Reality</p>
-            <div class="projects-wrapper">
-                <div class="project-card tilt-effect">
-                    <h3 class="project-title">Farm X Change</h3>
-                    <p class="project-desc">A cutting-edge platform enabling farmers to connect directly with customers, eliminating middlemen.</p>
-                    <p class="project-tech"><strong>Tech:</strong> HTML, CSS, JavaScript, Web Development</p>
+        <div class="bg-brand py-8 overflow-hidden flex relative z-10 border-y border-border shadow-[0_0_50px_rgba(255,73,37,0.1)]">
+            <div class="animate-marquee items-center">
+                <!-- Group 1 -->
+                <div class="flex items-center">
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">OpenAI API</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">n8n</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">LangChain</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">Python</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">React</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">RAG Systems</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
                 </div>
-                <div class="project-card tilt-effect">
-                    <h3 class="project-title">Quiz Application</h3>
-                    <p class="project-desc">An elegant, interactive web app delivering engaging quizzes with a seamless user experience.</p>
-                    <p class="project-tech"><strong>Tech:</strong> HTML, CSS, JavaScript</p>
-                    <p class="project-link"><a href="https://github.com/Siddu-lingampelli/quiz.git" target="_blank">View on GitHub</a></p>
-                </div>
-                <div class="project-card tilt-effect">
-                    <h3 class="project-title">Small Projects</h3>
-                    <p class="project-desc">A curated set of mini-projects honing my skills in coding and web development.</p>
+                <!-- Group 2 (Duplicate for smooth scroll) -->
+                <div class="flex items-center">
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">OpenAI API</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">n8n</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">LangChain</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">Python</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">React</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
+                    <span class="text-5xl md:text-6xl font-display uppercase tracking-tightest text-textDark mx-10">RAG Systems</span>
+                    <i data-lucide="sparkle" class="w-8 h-8 text-textDark mx-6"></i>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="section contact-section">
-        <div class="section-container">
-            <h2 class="section-title">Let's Connect</h2>
-            <p class="section-tagline">Building the Future, One Collaboration at a Time</p>
-            <div class="contact-wrapper">
-                <p><strong>Email:</strong> siddulingampelli460@gmail.com</p>
-                <p><strong>GitHub:</strong> <a href="https://github.com/Siddu-lingampelli" target="_blank">siddu-lingampelli</a></p>
-                <p><strong>LinkedIn:</strong> Coming Soon</p>
-                <p><strong>YouTube:</strong> <a href="https://youtube.com/@TimestreachStudio" target="_blank">Timestreach Studio</a></p>
-                <div class="social-icons">
-                    <a href="https://github.com/Siddu-lingampelli" target="_blank">🐙</a>
-                    <a href="https://youtube.com/@TimestreachStudio" target="_blank">▶️</a>
-                    <a href="mailto:siddulingampelli460@gmail.com">✉️</a>
+        <section id="about" class="py-40 px-6 bg-background">
+            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 lg:gap-32">
+                
+                <div class="lg:w-5/12 framer-reveal">
+                    <div class="sticky top-40">
+                        <p class="text-brand font-bold tracking-widest text-sm mb-8 uppercase flex items-center gap-3">
+                            <span class="w-10 h-px bg-brand"></span> ( ABOUT )
+                        </p>
+                        <h2 class="text-6xl md:text-8xl font-display uppercase tracking-tightest leading-[0.95] text-white">
+                            ENGINEERING<br>INTELLIGENCE
+                        </h2>
+                    </div>
                 </div>
-                <p class="contact-invite">Ready to collaborate on something groundbreaking? Reach out!</p>
+                
+                <div class="lg:w-7/12 flex flex-col gap-12 framer-reveal">
+                    <h3 class="text-3xl md:text-5xl font-medium tracking-tight leading-[1.3] text-white">
+                        <span class="text-textMuted">I am a CSE graduate (Class of 2026), actively seeking full-time roles in</span> AI Agents, Workflow Automation, <span class="text-textMuted">and</span> Full-Stack Development.
+                    </h3>
+                    <p class="text-xl md:text-2xl text-textMuted font-medium leading-relaxed">
+                        My focus is combining LLMs with platforms like <span class="text-white">n8n</span> to craft systems that solve real-world problems. Instead of just writing code, I engineer solutions that automate the mundane and amplify productivity.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-8">
+                        <div class="bg-surface border border-border p-8 rounded-3xl flex flex-col gap-5 hover:border-brand/50 transition-colors group">
+                            <i data-lucide="bot" class="w-10 h-10 text-brand group-hover:scale-110 transition-transform"></i>
+                            <span class="font-bold text-xl text-white">AI Agent Architecture</span>
+                        </div>
+                        <div class="bg-surface border border-border p-8 rounded-3xl flex flex-col gap-5 hover:border-brand/50 transition-colors group">
+                            <i data-lucide="workflow" class="w-10 h-10 text-brand group-hover:scale-110 transition-transform"></i>
+                            <span class="font-bold text-xl text-white">n8n Automation</span>
+                        </div>
+                        <div class="bg-surface border border-border p-8 rounded-3xl flex flex-col gap-5 hover:border-brand/50 transition-colors group">
+                            <i data-lucide="database" class="w-10 h-10 text-brand group-hover:scale-110 transition-transform"></i>
+                            <span class="font-bold text-xl text-white">RAG & Vector DB</span>
+                        </div>
+                        <div class="bg-surface border border-border p-8 rounded-3xl flex flex-col gap-5 hover:border-brand/50 transition-colors group">
+                            <i data-lucide="layers" class="w-10 h-10 text-brand group-hover:scale-110 transition-transform"></i>
+                            <span class="font-bold text-xl text-white">Full-Stack Systems</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <p>© 2025 Lingampelli Siddhartha | Designed with Precision & Passion</p>
+        <section id="skills" class="py-40 px-6 bg-brand shadow-[inset_0_20px_50px_rgba(0,0,0,0.5)]">
+            <div class="max-w-7xl mx-auto">
+                <div class="framer-reveal flex flex-col mb-24 md:items-start text-textDark">
+                    <p class="font-black tracking-widest text-sm mb-6 uppercase flex items-center gap-3">
+                        <span class="w-10 h-px bg-textDark"></span> ( ARSENAL )
+                    </p>
+                    <h2 class="text-6xl md:text-9xl font-display font-black tracking-tightest uppercase leading-[0.95]">Core<br>Capabilities.</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <div class="framer-reveal bg-background p-10 rounded-[2rem] flex flex-col gap-8 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-surface border border-border rounded-2xl">
+                                <i data-lucide="bot" class="w-8 h-8 text-brand"></i>
+                            </div>
+                            <h3 class="text-3xl font-display uppercase tracking-tightest text-white">AI & Data</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">OpenAI API</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">LangChain</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">RAG Systems</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">AI Agents</span>
+                        </div>
+                    </div>
+
+                    <div class="framer-reveal bg-background p-10 rounded-[2rem] flex flex-col gap-8 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-surface border border-border rounded-2xl">
+                                <i data-lucide="workflow" class="w-8 h-8 text-brand"></i>
+                            </div>
+                            <h3 class="text-3xl font-display uppercase tracking-tightest text-white">Automation</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">n8n</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">API Integrations</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">Webhooks</span>
+                        </div>
+                    </div>
+
+                    <div class="framer-reveal bg-background p-10 rounded-[2rem] flex flex-col gap-8 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-surface border border-border rounded-2xl">
+                                <i data-lucide="terminal" class="w-8 h-8 text-brand"></i>
+                            </div>
+                            <h3 class="text-3xl font-display uppercase tracking-tightest text-white">Programming</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">Python</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">JavaScript</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">Java</span>
+                        </div>
+                    </div>
+
+                    <div class="framer-reveal bg-background p-10 rounded-[2rem] flex flex-col gap-8 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-surface border border-border rounded-2xl">
+                                <i data-lucide="database" class="w-8 h-8 text-brand"></i>
+                            </div>
+                            <h3 class="text-3xl font-display uppercase tracking-tightest text-white">Backend</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">Node.js</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">Express.js</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">MongoDB</span>
+                        </div>
+                    </div>
+
+                    <div class="framer-reveal bg-background p-10 rounded-[2rem] flex flex-col gap-8 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-surface border border-border rounded-2xl">
+                                <i data-lucide="layers" class="w-8 h-8 text-brand"></i>
+                            </div>
+                            <h3 class="text-3xl font-display uppercase tracking-tightest text-white">Frontend</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">React</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">Tailwind CSS</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">HTML/CSS</span>
+                        </div>
+                    </div>
+
+                    <div class="framer-reveal bg-background p-10 rounded-[2rem] flex flex-col gap-8 shadow-2xl hover:-translate-y-2 transition-transform duration-300">
+                        <div class="flex items-center gap-4">
+                            <div class="p-3 bg-surface border border-border rounded-2xl">
+                                <i data-lucide="wrench" class="w-8 h-8 text-brand"></i>
+                            </div>
+                            <h3 class="text-3xl font-display uppercase tracking-tightest text-white">Tools</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">Git</span>
+                            <span class="px-5 py-2.5 bg-surfaceLight border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wide">GitHub</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-40 px-6 bg-background relative z-20">
+            <div class="max-w-6xl mx-auto">
+                <div class="mb-24 framer-reveal">
+                    <p class="text-brand font-bold tracking-widest text-sm uppercase mb-6 flex items-center gap-3">
+                        <span class="w-10 h-px bg-brand"></span> ( PORTFOLIO )
+                    </p>
+                    <h2 class="text-6xl md:text-9xl font-display text-white uppercase tracking-tightest leading-[0.95]">Featured<br>Work.</h2>
+                </div>
+                
+                <div class="flex flex-col gap-10 pb-32 relative">
+                    
+                    <div class="framer-reveal card-stack-1 sticky w-full bg-surface border border-border rounded-[2.5rem] p-10 md:p-14 flex flex-col justify-between shadow-2xl origin-top min-h-[480px]">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <h3 class="text-5xl md:text-7xl font-display text-white uppercase tracking-tightest leading-[0.95] mb-8">AI Lead Outreach Agent</h3>
+                                <div class="flex flex-wrap gap-3 mb-8">
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">n8n</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">OpenAI</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">Gmail</span>
+                                </div>
+                            </div>
+                            <span class="text-7xl md:text-[120px] font-display text-brand leading-none tracking-tightest">01</span>
+                        </div>
+                        <div class="flex items-end justify-between mt-auto pt-10 border-t border-border">
+                            <p class="text-xl md:text-3xl text-textMuted max-w-3xl font-medium leading-relaxed">Automated lead generation workflow that <strong class="text-white">processes 500+ leads per week</strong>, significantly reducing manual outreach time using AI intelligence.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="framer-reveal card-stack-2 sticky w-full bg-[#161616] border border-border rounded-[2.5rem] p-10 md:p-14 flex flex-col justify-between shadow-2xl origin-top min-h-[480px]">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <h3 class="text-5xl md:text-7xl font-display text-white uppercase tracking-tightest leading-[0.95] mb-8">Daily News Summarizer</h3>
+                                <div class="flex flex-wrap gap-3 mb-8">
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">n8n</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">OpenAI</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">News APIs</span>
+                                </div>
+                            </div>
+                            <span class="text-7xl md:text-[120px] font-display text-brand leading-none tracking-tightest">02</span>
+                        </div>
+                        <div class="flex items-end justify-between mt-auto pt-10 border-t border-border">
+                            <p class="text-xl md:text-3xl text-textMuted max-w-3xl font-medium leading-relaxed">AI-powered system that gathers, analyzes, and distills daily global news into concise, highly readable morning reports.</p>
+                        </div>
+                    </div>
+
+                    <div class="framer-reveal card-stack-3 sticky w-full bg-[#1a1a1a] border border-border rounded-[2.5rem] p-10 md:p-14 flex flex-col justify-between shadow-2xl origin-top min-h-[480px]">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <h3 class="text-5xl md:text-7xl font-display text-white uppercase tracking-tightest leading-[0.95] mb-8">Telegram Voice Agent</h3>
+                                <div class="flex flex-wrap gap-3 mb-8">
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">Telegram API</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">AI Models</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">n8n</span>
+                                </div>
+                            </div>
+                            <span class="text-7xl md:text-[120px] font-display text-brand leading-none tracking-tightest">03</span>
+                        </div>
+                        <div class="flex items-end justify-between mt-auto pt-10 border-t border-border">
+                            <p class="text-xl md:text-3xl text-textMuted max-w-3xl font-medium leading-relaxed">Interactive, voice-enabled AI assistant integrated directly within Telegram for hands-free productivity.</p>
+                        </div>
+                    </div>
+
+                    <div class="framer-reveal card-stack-4 sticky w-full bg-[#1d1d1d] border border-border rounded-[2.5rem] p-10 md:p-14 flex flex-col justify-between shadow-2xl origin-top min-h-[480px]">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <h3 class="text-5xl md:text-7xl font-display text-white uppercase tracking-tightest leading-[0.95] mb-8">FarmXchange & ConnectO</h3>
+                                <div class="flex flex-wrap gap-3 mb-8">
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">React</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">Node.js</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">MongoDB</span>
+                                </div>
+                            </div>
+                            <span class="text-7xl md:text-[120px] font-display text-brand leading-none tracking-tightest">04</span>
+                        </div>
+                        <div class="flex items-end justify-between mt-auto pt-10 border-t border-border">
+                            <p class="text-xl md:text-3xl text-textMuted max-w-3xl font-medium leading-relaxed">Scalable full-stack applications engineered for deep data insights, secure user authentication, and seamless communication.</p>
+                        </div>
+                    </div>
+
+                    <div class="framer-reveal card-stack-5 sticky w-full bg-[#202020] border border-border rounded-[2.5rem] p-10 md:p-14 flex flex-col justify-between shadow-2xl origin-top min-h-[480px]">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <h3 class="text-5xl md:text-7xl font-display text-white uppercase tracking-tightest leading-[0.95] mb-8">RAG Agent (LangChain)</h3>
+                                <div class="flex flex-wrap gap-3 mb-8">
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">LangChain</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">OpenAI</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">Vector DB</span>
+                                </div>
+                            </div>
+                            <span class="text-7xl md:text-[120px] font-display text-brand leading-none tracking-tightest">05</span>
+                        </div>
+                        <div class="flex items-end justify-between mt-auto pt-10 border-t border-border">
+                            <p class="text-xl md:text-3xl text-textMuted max-w-3xl font-medium leading-relaxed">Advanced Retrieval-Augmented Generation system allowing intelligent, real-time QA against dense enterprise documents.</p>
+                        </div>
+                    </div>
+
+                    <div class="framer-reveal card-stack-6 sticky w-full bg-[#242424] border border-border rounded-[2.5rem] p-10 md:p-14 flex flex-col justify-between shadow-2xl origin-top min-h-[480px]">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <h3 class="text-5xl md:text-7xl font-display text-white uppercase tracking-tightest leading-[0.95] mb-8">Resume Checker</h3>
+                                <div class="flex flex-wrap gap-3 mb-8">
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">Python</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">NLP</span>
+                                    <span class="px-5 py-2.5 bg-background border border-border rounded-xl text-sm font-bold text-white uppercase tracking-wider">React</span>
+                                </div>
+                            </div>
+                            <span class="text-7xl md:text-[120px] font-display text-brand leading-none tracking-tightest">06</span>
+                        </div>
+                        <div class="flex items-end justify-between mt-auto pt-10 border-t border-border">
+                            <p class="text-xl md:text-3xl text-textMuted max-w-3xl font-medium leading-relaxed">System for analyzing and scoring resumes intelligently against job descriptions, greatly reducing HR screening time.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-40 px-6 bg-brand text-textDark text-center relative overflow-hidden border-y border-background shadow-[inset_0_20px_50px_rgba(0,0,0,0.5)]">
+            <div class="max-w-5xl mx-auto relative z-10 framer-reveal">
+                <p class="font-black tracking-widest text-sm mb-8 uppercase flex items-center justify-center gap-3">
+                    <span class="w-10 h-px bg-textDark"></span> ( CONTACT ) <span class="w-10 h-px bg-textDark"></span>
+                </p>
+                <!-- FIXED: leading-[0.95] prevents squishing like in the screenshot -->
+                <h2 class="text-6xl md:text-[110px] lg:text-[140px] font-display uppercase tracking-tightest leading-[0.95] text-textDark mb-8">
+                    LET'S BUILD<br>TOGETHER.
+                </h2>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6 mt-14">
+                    <button onclick="openContactModal()" class="w-full sm:w-auto bg-textDark text-white px-14 py-6 rounded-full text-xl font-bold uppercase tracking-widest hover:scale-105 transition-transform flex items-center justify-center gap-3 shadow-2xl">
+                        <i data-lucide="mail" class="w-6 h-6"></i> Get in touch
+                    </button>
+                    <a href="https://github.com/Siddu-lingampelli" target="_blank" rel="noreferrer" class="w-full sm:w-auto bg-transparent border-[3px] border-textDark text-textDark px-14 py-6 rounded-full text-xl font-bold uppercase tracking-widest hover:bg-textDark hover:text-white transition-colors flex items-center justify-center gap-3">
+                        <i data-lucide="github" class="w-6 h-6"></i> GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-background py-16 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex flex-col items-center md:items-start gap-2">
+                <div class="text-3xl font-display uppercase tracking-widest text-white flex items-center gap-3">
+                    <div class="w-3 h-3 bg-brand shadow-[0_0_15px_rgba(255,73,37,0.8)]"></div>
+                    SIDDHARTHA
+                </div>
+                <p class="text-base text-textMuted font-medium tracking-wide">Final-Year B.Tech Student • Indian</p>
+            </div>
+            
+            <div class="flex items-center gap-8">
+                <a href="https://github.com/Siddu-lingampelli" target="_blank" rel="noreferrer" class="text-textMuted hover:text-brand transition-colors">
+                    <i data-lucide="github" class="w-6 h-6"></i>
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" class="text-textMuted hover:text-brand transition-colors">
+                    <i data-lucide="linkedin" class="w-6 h-6"></i>
+                </a>
+                <button onclick="openContactModal()" class="text-textMuted hover:text-brand transition-colors">
+                    <i data-lucide="mail" class="w-6 h-6"></i>
+                </button>
+            </div>
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+    <!-- Contact Modal Overlay -->
+    <div id="contact-modal" class="fixed inset-0 z-[100] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-[#0a0a0a]/80 backdrop-blur-md" onclick="closeContactModal()"></div>
+        
+        <!-- Modal Content Box -->
+        <div class="bg-surface border border-border w-full max-w-md mx-4 rounded-[2rem] p-8 md:p-10 relative z-10 transform scale-95 transition-transform duration-300 shadow-2xl" id="contact-modal-content">
+            <button onclick="closeContactModal()" class="absolute top-6 right-6 text-neutral-400 hover:text-white transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- View 1: Selection Screen -->
+            <div id="modal-selection-view" class="flex flex-col gap-6">
+                <div>
+                    <h3 class="text-4xl font-display uppercase tracking-tightest text-white mb-2">Let's Connect</h3>
+                    <p class="text-neutral-400 text-sm font-medium">Choose how you'd like to reach out.</p>
+                </div>
+                
+                <a href="mailto:siddhartha.lingampelli@example.com?subject=Inquiry%20from%20Portfolio" class="w-full bg-brand text-textDark px-6 py-5 rounded-2xl font-bold uppercase tracking-widest hover:scale-[1.02] transition-transform flex items-center justify-center gap-3">
+                    <i data-lucide="mail" class="w-5 h-5"></i> Open Mail App
+                </a>
+                
+                <button onclick="showDirectMessageForm()" class="w-full bg-transparent border-2 border-border text-white px-6 py-5 rounded-2xl font-bold uppercase tracking-widest hover:bg-white/5 transition-colors flex items-center justify-center gap-3">
+                    <i data-lucide="message-square" class="w-5 h-5"></i> Direct Message
+                </button>
+            </div>
+
+            <!-- View 2: Direct Message Form -->
+            <div id="modal-form-view" class="hidden flex flex-col gap-5">
+                <button onclick="showSelectionView()" class="text-neutral-400 hover:text-brand transition-colors flex items-center gap-2 text-sm font-bold uppercase tracking-widest w-max mb-1">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+                </button>
+                <h3 class="text-4xl font-display uppercase tracking-tightest text-white mb-2">Direct Message</h3>
+                
+                <form id="contact-form" onsubmit="handleFormSubmit(event)" class="flex flex-col gap-5">
+                    <div>
+                        <label class="block text-xs font-bold tracking-widest text-neutral-400 uppercase mb-2">Your Email</label>
+                        <input type="email" required class="w-full bg-[#0a0a0a] border border-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand transition-colors font-medium placeholder-neutral-600" placeholder="hello@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold tracking-widest text-neutral-400 uppercase mb-2">Message</label>
+                        <textarea required rows="4" class="w-full bg-[#0a0a0a] border border-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand transition-colors resize-none font-medium placeholder-neutral-600" placeholder="How can we collaborate?"></textarea>
+                    </div>
+                    <button type="submit" id="submit-btn" class="w-full mt-2 bg-brand text-textDark px-6 py-4 rounded-xl font-bold uppercase tracking-widest hover:scale-[1.02] transition-transform flex items-center justify-center gap-3">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- View 3: Success Confirmation -->
+            <div id="modal-success-view" class="hidden flex flex-col items-center text-center gap-4 py-8">
+                <div class="w-20 h-20 bg-brand/20 text-brand rounded-full flex items-center justify-center mb-4">
+                    <i data-lucide="check" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-4xl font-display uppercase tracking-tightest text-white">Message Sent!</h3>
+                <p class="text-neutral-400 font-medium">Thanks for reaching out. I'll get back to you shortly.</p>
+                <button onclick="closeContactModal()" class="mt-6 w-full bg-transparent border-2 border-border text-white px-6 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-white/5 transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { animate, inView, stagger } from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+
+        // Initialize Icons
+        lucide.createIcons();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // Hero Animation (Triggers immediately)
+            animate("#home .framer-reveal", 
+                { opacity: [0, 1], y: [50, 0] }, 
+                { duration: 0.9, delay: stagger(0.15), ease: [0.16, 1, 0.3, 1] }
+            );
+
+            // Scroll triggers for all other sections
+            const revealElements = document.querySelectorAll(".framer-reveal");
+            
+            revealElements.forEach((el) => {
+                if (el.closest('#home')) return; // Skip hero elements
+
+                inView(el, (info) => {
+                    animate(info.target, 
+                        { opacity: [0, 1], y: [40, 0] }, 
+                        { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+                    );
+                }, { margin: "-100px" }); // Trigger slightly before it comes into view
+            });
+        });
+
+        // Navbar Glassmorphism Scroll Logic
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-[#0a0a0a]/90', 'backdrop-blur-xl', 'border-border', 'py-4');
+                navbar.classList.remove('bg-transparent', 'py-6', 'border-transparent');
+            } else {
+                navbar.classList.remove('bg-[#0a0a0a]/90', 'backdrop-blur-xl', 'border-border', 'py-4');
+                navbar.classList.add('bg-transparent', 'py-6', 'border-transparent');
+            }
+        });
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            const isHidden = mobileMenu.classList.contains('pointer-events-none');
+            
+            if (isHidden) {
+                mobileMenu.classList.remove('pointer-events-none', 'opacity-0');
+                mobileMenu.classList.add('opacity-100');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileMenu.classList.add('pointer-events-none', 'opacity-0');
+                mobileMenu.classList.remove('opacity-100');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+        // --- Contact Modal JavaScript Logic ---
+        
+        window.openContactModal = function() {
+            const modal = document.getElementById('contact-modal');
+            const content = document.getElementById('contact-modal-content');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+            window.showSelectionView(); // Always reset to selection view on open
+        };
+
+        window.closeContactModal = function() {
+            const modal = document.getElementById('contact-modal');
+            const content = document.getElementById('contact-modal-content');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+        };
+
+        window.showSelectionView = function() {
+            document.getElementById('modal-selection-view').classList.remove('hidden');
+            document.getElementById('modal-form-view').classList.add('hidden');
+            document.getElementById('modal-success-view').classList.add('hidden');
+        };
+
+        window.showDirectMessageForm = function() {
+            document.getElementById('modal-selection-view').classList.add('hidden');
+            document.getElementById('modal-form-view').classList.remove('hidden');
+        };
+
+        window.handleFormSubmit = function(e) {
+            e.preventDefault(); // Prevent page reload
+            
+            const btn = document.getElementById('submit-btn');
+            const originalText = btn.innerHTML;
+            
+            // Show loading state
+            btn.innerHTML = '<span class="flex items-center justify-center gap-2"><i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Sending...</span>';
+            lucide.createIcons(); // Refresh icons for the spinner
+            
+            // Simulate a network request delay (1.5 seconds)
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                document.getElementById('modal-form-view').classList.add('hidden');
+                document.getElementById('modal-success-view').classList.remove('hidden');
+                document.getElementById('contact-form').reset(); // Clear form fields
+            }, 1500);
+        };
+    </script>
 </body>
 </html>
